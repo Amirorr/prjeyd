@@ -1,53 +1,33 @@
-import db.exception.EntityNotFoundException;
-import example.Human;
 import db.*;
+import db.exception.InvalidEntityException;
+import example.*;
 
-public class Main {
-    public static void main(String[] args) throws EntityNotFoundException {
-        Human[] humans = {
-                new Human("Gholi"),
-                new Human("Jamshid"),
-                new Human("Akbar"),
-        };
+public static void main(String[] args) throws InvalidEntityException {
+    Document doc = new Document("Eid Eid Eid");
 
-        System.out.println("#### Test add method ####");
+    Database.add(doc);
 
-        for (Human h : humans) {
-            System.out.println("Adding " + h.name + " to the database.");
-            Database.add(h);
-        }
+    System.out.println("Document added");
 
-        for (Human h : humans) {
-            System.out.println("Id of \"" + h.name + "\" is " + h.id + ".");
-        }
+    System.out.println("id: " + doc.id);
+    System.out.println("content: " + doc.content);
+    System.out.println("creation date: " + doc.getCreationDate());
+    System.out.println("last modification date: " + doc.getLastModificationDate());
+    System.out.println();
 
-        System.out.println();
-        System.out.println("#### Test get method ####");
-
-        int gholiId = humans[0].id;
-        Human gholi = (Human) Database.get(gholiId);
-
-        System.out.println("successfully got " + gholi.name + " from the database.");
-
-        System.out.println();
-        System.out.println("#### Test update method ####");
-
-        gholi.name = "Gholi Mohammadi";
-        Database.update(gholi);
-
-        Human gholiAgain = (Human) Database.get(gholiId);
-        System.out.println("Updated name: \"" + gholiAgain.name + "\".");
-
-        System.out.println();
-        System.out.println("#### Test delete method ####");
-
-        int jamshidId = humans[1].id;
-        Database.delete(jamshidId);
-
-        try {
-            Human jamshid = (Human) Database.get(jamshidId);
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
+    try {
+        Thread.sleep(30_000);
+    } catch (InterruptedException e) {
+        System.out.println("Sleep interrupted!");
     }
+
+    doc.content = "This is the new content";
+
+    Database.update(doc);
+
+    System.out.println("Document updated");
+    System.out.println("id: " + doc.id);
+    System.out.println("content: " + doc.content);
+    System.out.println("creation date: " + doc.getCreationDate());
+    System.out.println("last modification date: " + doc.getLastModificationDate());
 }
