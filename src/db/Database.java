@@ -4,7 +4,7 @@ import db.exception.EntityNotFoundException;
 import java.util.*;
 
 import db.exception.InvalidEntityException;
-import example.*;
+
 
 
 public class Database {
@@ -13,8 +13,6 @@ public class Database {
     private Database() { }
 
     public static void add(Entity e) throws InvalidEntityException {
-//        Validator validator = validators.get(e.getEntityCode());
-//        validator.validate(e);
         e.id = generateId();
         System.out.println(e.id);
         entities.add(e);
@@ -27,6 +25,9 @@ public class Database {
         }
 
     }
+
+
+
 
     public static void registerValidator(int entityCode, Validator validator) {
         for (Integer integer : validators.keySet()){
@@ -52,10 +53,6 @@ public class Database {
     }
 
     public static void update(Entity e) throws EntityNotFoundException, InvalidEntityException {
-//        Validator validator = validators.get(e.getEntityCode());
-//        validator.validate(e);
-
-
 
 
         if (e instanceof Trackable){
@@ -71,4 +68,7 @@ public class Database {
     private static int generateId() {
         return entities.size() + 1;
     }
-}
+
+    public static ArrayList<Entity> getAll(int entityCode) {
+        ArrayList<Entity> list = new ArrayList<>();
+
